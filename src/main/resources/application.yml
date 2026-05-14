@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: MovieRatingBatchProcessing
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shantanukumar
+    driver-class-name: org.postgresql.Driver
+    username: shantanukumar
+    password: shantanukumar
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  batch:
+    job:
+      names: processMovieRatingsJob
+      enabled: true
+    jdbc:
+      initialize-schema: always
+      table-prefix: BATCH_
+      max-var-char-length: 1000
+      isolation-level-for-create: ISOLATION_READ_COMMITTED
+
+  sql:
+    init:
+      mode: always
