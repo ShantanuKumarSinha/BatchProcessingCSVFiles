@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.shann'
 version = '0.0.1-SNAPSHOT'
-description = 'MovieRatingBatchProcessing'
+description = 'BatchProcessingCSVFiles'
 
 java {
     toolchain {
@@ -27,8 +27,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-batch-jdbc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-batch-test'
     //runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'org.postgresql:postgresql'
     //runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.postgresql:postgresql'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

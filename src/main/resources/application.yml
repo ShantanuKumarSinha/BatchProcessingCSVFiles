@@ -1,12 +1,15 @@
 spring:
   application:
-    name: MovieRatingBatchProcessing
+    name: BatchProcessingCSVFiles
+
+  profiles:
+    active: postgres
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/shantanukumar
-    driver-class-name: org.postgresql.Driver
-    username: shantanukumar
-    password: shantanukumar
+    url:
+    driver-class-name:
+    username:
+    password:
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -16,8 +19,8 @@ spring:
 
   batch:
     job:
-      names: processMovieRatingsJob
       enabled: true
+      name: importProductJob
     jdbc:
       initialize-schema: always
       table-prefix: BATCH_

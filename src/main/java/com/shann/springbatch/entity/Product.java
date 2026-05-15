@@ -1,5 +1,6 @@
 package com.shann.springbatch.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,5 +22,5 @@ public class Product {
   private String color;
   private String size;
   private String availability;
-  private int internalID;
+  private String internalId;
 }
