@@ -47,7 +47,7 @@ The application accepts `--job` argument:
 ./gradlew bootRun --args='--job=product'
 ```
 
-## 5) Scheduled Movie Rating Import
+## 5) Scheduled Movie Rating Import (Along with User and Product Imports)
 `importMovieRatingJob` is scheduled and runs based on the cron in:
 `src/main/java/com/shann/springbatch/ScheduledJobRunner.java`
 
