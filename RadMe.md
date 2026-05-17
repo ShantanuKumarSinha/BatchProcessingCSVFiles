@@ -11,10 +11,10 @@ This project uses `postgres` profile by default (`spring.profiles.active=postgre
 Update PostgreSQL connection values if needed in:
 `src/main/resources/application-postgres.yml`
 
-Default values in repo:
-- URL: `jdbc:postgresql://localhost:5432/shantanukumar`
-- Username: `shantanukumar`
-- Password: `shantanukumar`
+Example values:
+- URL: `jdbc:postgresql://localhost:5432/your_database`
+- Username: `your_username`
+- Password: `your_password`
 
 ## 2) Build the Project
 From repository root:
