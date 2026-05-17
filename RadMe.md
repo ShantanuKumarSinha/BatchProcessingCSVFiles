@@ -1,0 +1,59 @@
+# Application Running Steps
+
+## Prerequisites
+- Java 21
+- PostgreSQL running locally
+- Gradle wrapper (`./gradlew`) from this repository
+
+## 1) Configure Database (Default Profile: `postgres`)
+This project uses `postgres` profile by default (`spring.profiles.active=postgres`).
+
+Update PostgreSQL connection values if needed in:
+`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles/src/main/resources/application-postgres.yml`
+
+Default values in repo:
+- URL: `jdbc:postgresql://localhost:5432/shantanukumar`
+- Username: `shantanukumar`
+- Password: `shantanukumar`
+
+## 2) Build the Project
+From repository root (`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles`):
+
+```bash
+./gradlew clean build
+```
+
+## 3) Run the Application
+
+```bash
+./gradlew bootRun
+```
+
+## 4) Run Specific Batch Jobs
+The application accepts `--job` argument:
+
+- Run all startup jobs (default):
+```bash
+./gradlew bootRun --args='--job=all'
+```
+
+- Run only user import:
+```bash
+./gradlew bootRun --args='--job=user'
+```
+
+- Run only product import:
+```bash
+./gradlew bootRun --args='--job=product'
+```
+
+## 5) Scheduled Movie Rating Import
+`importMovieRatingJob` is scheduled and runs based on the cron in:
+`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles/src/main/java/com/shann/springbatch/ScheduledJobRunner.java`
+
+Current cron expression:
+- `0 20 16 * * *`
+
+## Notes
+- CSV files are read from `src/main/resources/csvFiles/`.
+- Spring Batch tables are auto-initialized (`spring.batch.jdbc.initialize-schema=always`).
