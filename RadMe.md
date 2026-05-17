@@ -9,7 +9,7 @@
 This project uses `postgres` profile by default (`spring.profiles.active=postgres`).
 
 Update PostgreSQL connection values if needed in:
-`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles/src/main/resources/application-postgres.yml`
+`src/main/resources/application-postgres.yml`
 
 Default values in repo:
 - URL: `jdbc:postgresql://localhost:5432/shantanukumar`
@@ -17,7 +17,7 @@ Default values in repo:
 - Password: `shantanukumar`
 
 ## 2) Build the Project
-From repository root (`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles`):
+From repository root:
 
 ```bash
 ./gradlew clean build
@@ -49,7 +49,7 @@ The application accepts `--job` argument:
 
 ## 5) Scheduled Movie Rating Import
 `importMovieRatingJob` is scheduled and runs based on the cron in:
-`/home/runner/work/BatchProcessingCSVFiles/BatchProcessingCSVFiles/src/main/java/com/shann/springbatch/ScheduledJobRunner.java`
+`src/main/java/com/shann/springbatch/ScheduledJobRunner.java`
 
 Current cron expression:
 - `0 20 16 * * *`
