@@ -1,5 +1,6 @@
 package com.shann.springbatch.config;
 
+import com.shann.springbatch.entity.MovieRating;
 import com.shann.springbatch.entity.Product;
 import com.shann.springbatch.entity.User;
 import javax.sql.DataSource;
@@ -177,6 +178,84 @@ public class BatchConfiguration {
     public Job importProductJob() {
         return new JobBuilder("importProductJob", jobRepository)
                 .start(productStep())
+                .build();
+    }
+
+    // -------------------- MOVIE RATING JOB --------------------
+
+    @NonNull
+    static FlatFileItemReader<MovieRating> getMovieRatingFlatFileItemReader(
+            LineMapper<MovieRating> lineMapper, DelimitedLineTokenizer tokenizer) {
+
+        BeanWrapperFieldSetMapper<MovieRating> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(MovieRating.class);
+
+        ((DefaultLineMapper<MovieRating>) lineMapper).setLineTokenizer(tokenizer);
+        ((DefaultLineMapper<MovieRating>) lineMapper).setFieldSetMapper(fieldSetMapper);
+
+        FlatFileItemReader<MovieRating> reader = new FlatFileItemReader<>(lineMapper);
+        reader.setResource(new ClassPathResource("csvFiles/ratings.csv"));
+        reader.setLinesToSkip(1);
+        return reader;
+    }
+
+    @Bean
+    public FlatFileItemReader<MovieRating> movieRatingReader() {
+        LineMapper<MovieRating> lineMapper = new DefaultLineMapper<>();
+
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        tokenizer.setNames(
+                "constId",
+                "yourRating",
+                "dateRated",
+                "title",
+                "url",
+                "titleType",
+                "imdbRating",
+                "runtimeMins",
+                "year",
+                "genres",
+                "numVotes",
+                "releaseDate",
+                "directors"
+        );
+
+        return getMovieRatingFlatFileItemReader(lineMapper, tokenizer);
+    }
+
+    @Bean
+    public ItemProcessor<MovieRating, MovieRating> movieRatingProcessor() {
+        return rating -> rating;
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<MovieRating> movieRatingWriter() {
+        JdbcBatchItemWriter<MovieRating> writer = new JdbcBatchItemWriter<>();
+        writer.setDataSource(dataSource);
+        writer.setSql("""
+      INSERT INTO batch_movie_rating
+      (const_id, your_rating, date_rated, title, url, title_type, imdb_rating, runtime_mins, year, genres, num_votes, release_date, directors)
+      VALUES
+      (:constId, :yourRating, :dateRated, :title, :url, :titleType, :imdbRating, :runtimeMins, :year, :genres, :numVotes, :releaseDate, :directors)
+      """);
+        writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
+        return writer;
+    }
+
+    @Bean
+    public Step movieRatingStep() {
+        return new StepBuilder("movie-rating-step", jobRepository)
+                .<MovieRating, MovieRating>chunk(10)
+                .reader(movieRatingReader())
+                .processor(movieRatingProcessor())
+                .writer(movieRatingWriter())
+                .build();
+    }
+
+    @Bean
+    public Job importMovieRatingJob() {
+        return new JobBuilder("importMovieRatingJob", jobRepository)
+                .start(movieRatingStep())
                 .build();
     }
 }
