@@ -19,7 +19,7 @@ spring:
 
   batch:
     job:
-      enabled: true
+      enabled: false
       name: importProductJob
     jdbc:
       initialize-schema: always
